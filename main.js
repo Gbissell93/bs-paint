@@ -48,8 +48,11 @@ while (count <= gridWidth * gridWidth) {
 
 // Add queries for all your squares, palette colors, and brush here.
 // (Note the singular or plural used in that sentence!)
-
-
+const brush = document.querySelector('.current-brush');
+const palette = document.querySelectorAll('.palette-color');
+const canvas = document.querySelector('.canvas');
+const square = document.querySelectorAll('.square');
+let mouseDown = false
 
 /****************************
  * EVENT LISTENER FUNCTIONS *
@@ -61,12 +64,30 @@ while (count <= gridWidth * gridWidth) {
 // run as event listeners (after the next step is set up) isn't a
 // bad idea for testing purposes.
 
+function colorClass(el){
+return el.classList[1]
+}
+function paletteClick(el) {
+brush.classList.replace( colorClass(brush), colorClass(el.target))
+}
+function squareClick(el) {
+el.target.classList.replace(colorClass(el.target), colorClass(brush))
+}
+function squareHover(el) {
+ if (mouseDown === true) 
+ {el.target.classList.replace(colorClass(el.target), colorClass(brush))
+}
+}
 
 
 /**************************
  * WIRING IT ALL TOGETHER *
 **************************/
-
+palette.forEach((el) => el.addEventListener('click', paletteClick))
+square.forEach((el) => el.addEventListener('click', squareClick))
+square.forEach((el) => el.addEventListener('mouseenter', squareHover))
+document.body.addEventListener('mouseup', () => mouseDown = false)
+document.body.addEventListener('mousedown', () => mouseDown = true)
 // Now: wiring up our event listeners to our html node elements.
 // You'll need to add the appropriate event listener for each
 // square and for each palette color from the functions you
